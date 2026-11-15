@@ -1,0 +1,47 @@
+/* Aurora Salvage — page chrome around the canvas.
+   The game itself is drawn on the canvas; this only makes the page fill
+   the window, centres the 16:9 field, and hides the status line that
+   screen readers announce. */
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #05070f;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+noscript p {
+  max-width: 32em;
+}
+
+#game {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  object-fit: contain;
+  touch-action: none;
+  cursor: crosshair;
+  background: #05070f;
+}
+
+#game:focus-visible {
+  outline: 2px solid #5df2e6;
+  outline-offset: -2px;
+}
+
+/* Read aloud, never shown: the status line screen readers announce. */
+#status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
