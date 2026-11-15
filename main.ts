@@ -43,9 +43,18 @@ for (const name of shots) {
 }
 
 // A clean output directory: stale files from an earlier run must never
-// ride along into the graded entry.
-if (existsSync(outDir)) rmSync(outDir, { recursive: true, force: true });
-mkdirSync(outDir, { recursive: true });
+// ride along into the graded entry. Empty the directory's contents
+// without removing the directory itself: the grader mounts /output as
+// a writable directory whose parent is read-only, so deleting /output
+// itself fails with EACCES. Each entry inside is removed recursively,
+// which clears stale game/, screenshots/ and dossier.json alike.
+if (existsSync(outDir)) {
+  for (const name of readdirSync(outDir)) {
+    rmSync(join(outDir, name), { recursive: true, force: true });
+  }
+} else {
+  mkdirSync(outDir, { recursive: true });
+}
 
 cpSync(gameDir, join(outDir, 'game'), { recursive: true });
 cpSync(shotsDir, join(outDir, 'screenshots'), { recursive: true });
